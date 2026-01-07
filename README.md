@@ -15,3 +15,8 @@
 
 > *翻譯* PCH 的通用型輸入輸出（GPIO）訊號被劃分為多個群組（例如：GPP_A、GPP_B 等），並由 PCH 的主要電源區域（Primary well）或深層睡眠電源區域（Deep Sleep well）進行供電。
 
+> SCI and IOxAPIC interrupt capability is available on all GPIOs. NMI and SMI capability is available on selected GPIOs only.
+
+1. NMI(Non-Maskable Interrupt) 特點：強制執行CPU無法透過設定暫存器來忽略它。常見用途：嚴重的硬體錯誤（如記憶體 ECC 錯誤）、系統當機時的強制調試（Watchdog）、電壓異常告警
+2. SMI(System Management Interrupt) 常見用途：電源管理、風扇控制、BIOS 模擬（如舊式 USB 模擬 PS/2）。
+3. SCI(System Control Interrupt) ACPI專用。通常由作業系統的ACPI驅動程式處理 常見用途：筆電蓋子合上、按下電源鍵（短按）、電池電量改變等電源事件。
