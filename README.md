@@ -78,6 +78,17 @@ GPIO Dynamic Local Clock Gating Enable (GPDLCGEN): Specifies whether the GPIO Co
   * 訊號修正：如果硬體電路設計錯誤，把某個主動低位準的訊號接反了，你可以透過這個設定在晶片內部把它「翻轉」回來，而不需要改電路板。
   * 特殊協議處理：某些非標準的通訊協議可能需要這種內部的邏輯翻轉。
 
+<img width="665" height="82" alt="image" src="https://github.com/user-attachments/assets/ac981f79-84fb-432a-aa7e-78bafcb7673c" />  
+
+這是一個專門為硬體除錯（Hardware Debugging）與軟體模擬設計的「強制介入」功能。  
+RXRAW1 就像是一個硬體內部的「假訊號產生器」。它可以讓內部邏輯（不論是 GPIO 還是 Native Function）誤以為針腳現在正處於高電位（High），而不管外面實體接腳到底接了什麼。  
+* 為什麼需要 RXRAW1？ *
+這個位元在量產產品中幾乎不使用，但在開發階段非常強大：
+A. 模擬硬體尚未就緒的狀態
+假設你在寫一個偵測「硬碟已插入」的驅動程式，而該訊號是由某個 GPIO 的高電位來表示。但此時你手邊沒有硬碟，或者硬體電路還沒焊好。  
+做法：將 RXRAW1 設為 1。
+結果：你的驅動程式會立刻讀到「硬碟已插入」的訊號，讓你可以繼續寫後面的邏輯代碼。
+
 
 
 
