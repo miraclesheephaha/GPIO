@@ -20,3 +20,22 @@
 1. NMI(Non-Maskable Interrupt) 特點：強制執行CPU無法透過設定暫存器來忽略它。常見用途：嚴重的硬體錯誤（如記憶體 ECC 錯誤）、系統當機時的強制調試（Watchdog）、電壓異常告警
 2. SMI(System Management Interrupt) 常見用途：電源管理、風扇控制、BIOS 模擬（如舊式 USB 模擬 PS/2）。
 3. SCI(System Control Interrupt) ACPI專用。通常由作業系統的ACPI驅動程式處理 常見用途：筆電蓋子合上、按下電源鍵（短按）、電池電量改變等電源事件。
+
+#### Miscellaneous Configuration  
+GPIO Group to GPE_DW0 assignment encoding (GPE0_DW0): This register assigns a specific GPIO Group to the ACPI GPE0[31:0].
+> 這是一個關於 ACPI 喚醒機制（Wake Mechanism） 的核心設定。它的主要作用是建立 「GPIO 訊號」 與 「作業系統（OS）事件」 之間的橋樑。
+> 簡單來說：它決定了當你按下機殼上的某個按鍵或蓋上螢幕時，PCH 要如何通知 Windows（或是其他 OS）去執行對應的 ACPI _Lxx 或 _Exx 方法。
+> **範例** 0h = GPP_A[23:0] mapped to GPE[23:0]
+> 當你設定為 0h 時，硬體會進行以下映射：  
+* 實體訊號：GPP_A 群組的第 0 號到第 23 號腳位。
+* ACPI 位元：對應到 GPE0 暫存器的第 0 到第 23 位元。
+* 結果：如果 GPP_A5 有訊號跳動，OS 會收到一個 GPE[5] 的事件。
+
+GPIO Dynamic Local Clock Gating Enable (GPDLCGEN): Specifies whether the GPIO Community should perform local clock gating.  
+0 = Disable dynamic local clock gating.  
+1 = Enable dynamic local clock gating.  
+> GPDPCGEN (Partition Clock Gating) 非常相似，但層次（Granularity）更細。如果 Partition Clock Gating 是「關掉整個辦公室的總電源」，那麼 Local Clock Gating (GPDLCGEN) 就是「關掉個別座位的電燈」。
+
+
+
+
