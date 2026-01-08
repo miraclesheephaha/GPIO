@@ -62,6 +62,23 @@ GPIO Dynamic Local Clock Gating Enable (GPDLCGEN): Specifies whether the GPIO Co
 * 如果你希望在 S3 期間，這根針腳的電位不要變動（不要因為重置而亂跳，導致外部裝置誤動作），你必須選擇一個在 S3 期間不會觸發的重置訊號（例如 RSMRST#）
 * 這就是所謂的 Sx Isolation：讓 GPIO 的狀態與系統的睡眠/喚醒狀態（Sx states）隔離開來，互不干擾。
 
+<img width="668" height="84" alt="image" src="https://github.com/user-attachments/assets/13401646-79aa-4657-9f07-fc7eecc0d1cb" />  
+它的核心作用是決定：當這根針腳作為「特殊功能（Native Function，如 UART、I2C、SPI）」使用時，訊號在進到控制器之前，要不要經過「處理（反向或濾波）」。  
+*0=Raw RX pad state (原始狀態)*  
+* 路徑：訊號從實體針腳進來，經過接收緩衝器（RX Buffer）後，直接丟給 UART 或 I2C 控制器。
+* 特性：它不理會你在 GPIO 暫存器裡設定的任何「反向（RXINV）」邏輯。
+* 用途：絕大多數標準協議（如 SPI）都要求最精準的原始時序，不希望中間有任何邏輯處理。
+
+*1=Internal RX pad state (內部處理狀態)*  
+* 路徑：訊號進來後，先經過 RXINV（訊號反向器）與 PreGfRXSel（可能是雜訊過濾或同步電路）的處理。
+* 特性：如果你設定了 RXINV=1，那麼 Native Function 看到的訊號就會是反向過的（高變低，低變高）。
+* 用途：
+  * 訊號修正：如果硬體電路設計錯誤，把某個主動低位準的訊號接反了，你可以透過這個設定在晶片內部把它「翻轉」回來，而不需要改電路板。
+  * 特殊協議處理：某些非標準的通訊協議可能需要這種內部的邏輯翻轉。
+
+
+
+
 
 
 
