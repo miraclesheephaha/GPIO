@@ -46,6 +46,22 @@ GPIO Dynamic Local Clock Gating Enable (GPDLCGEN): Specifies whether the GPIO Co
 > 在電腦運作中，Reset 分為很多等級。有些只是軟體重啟，有些是整台電腦斷電重來。
 * 00 = RSMRST# (Resume Reset)
   * 等級：最高等級（最不容易被觸發）。
+  * 觸發時機：只有在主電力完全切斷（例如拔掉插頭、電池沒電）後重新供電時才會發生。
+  * 用途：如果你希望某個 GPIO 在 「按下重啟鍵（Warm Reset）」 或是 「從 S3/S4 睡眠喚醒」 時，依然保持原本的設定值（不被重置），就選這個。
+* 01 = Host Deep Reset (主機深層重置)
+  * 等級：中等級。
+  * 觸發時機：當系統進行冷開機（Cold Boot）或全球重置（Global Reset）時觸發。
+  * 特別之處：手冊提到 "does not assert when in S3/S4/S5"。這意味著如果電腦只是在睡覺，這個重置訊號不會發出，GPIO 的設定會被保留。
+* 10 = PLTRST# (Platform Reset)
+  * 等級：最常發生的重置。
+  * 觸發時機：只要電腦重新啟動（按重開機鍵、BIOS 更新完重啟），這個訊號就會生效。
+  * 用途：一般的 GPIO 通常設為這個。一旦系統重啟，GPIO 就回到預設狀態，由 BIOS 重新初始化。
+
+2. 什麼是 "Sx isolation" (Sx 隔離)？
+想像一個情境：你的 GPIO 接到一個外部裝置，而在電腦進入 S3（睡眠） 狀態時，為了省電，PCH 的某些部分會斷電。
+* 如果你希望在 S3 期間，這根針腳的電位不要變動（不要因為重置而亂跳，導致外部裝置誤動作），你必須選擇一個在 S3 期間不會觸發的重置訊號（例如 RSMRST#）
+* 這就是所謂的 Sx Isolation：讓 GPIO 的狀態與系統的睡眠/喚醒狀態（Sx states）隔離開來，互不干擾。
+
 
 
 
