@@ -63,8 +63,10 @@ GPIO Dynamic Local Clock Gating Enable (GPDLCGEN): Specifies whether the GPIO Co
 * 這就是所謂的 Sx Isolation：讓 GPIO 的狀態與系統的睡眠/喚醒狀態（Sx states）隔離開來，互不干擾。
 
 <img width="668" height="84" alt="image" src="https://github.com/user-attachments/assets/13401646-79aa-4657-9f07-fc7eecc0d1cb" />  
+
 它的核心作用是決定：當這根針腳作為「特殊功能（Native Function，如 UART、I2C、SPI）」使用時，訊號在進到控制器之前，要不要經過「處理（反向或濾波）」。  
 *0=Raw RX pad state (原始狀態)*  
+
 * 路徑：訊號從實體針腳進來，經過接收緩衝器（RX Buffer）後，直接丟給 UART 或 I2C 控制器。
 * 特性：它不理會你在 GPIO 暫存器裡設定的任何「反向（RXINV）」邏輯。
 * 用途：絕大多數標準協議（如 SPI）都要求最精準的原始時序，不希望中間有任何邏輯處理。
