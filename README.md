@@ -36,6 +36,17 @@ GPIO Dynamic Local Clock Gating Enable (GPDLCGEN): Specifies whether the GPIO Co
 1 = Enable dynamic local clock gating.  
 > GPDPCGEN (Partition Clock Gating) 非常相似，但層次（Granularity）更細。如果 Partition Clock Gating 是「關掉整個辦公室的總電源」，那麼 Local Clock Gating (GPDLCGEN) 就是「關掉個別座位的電燈」。
 
+#### Pad Configuration  
+<img width="660" height="167" alt="image" src="https://github.com/user-attachments/assets/9ef48150-247a-4e91-b13f-51cebcb5bc04" />  
+
+這是一個關於 「記憶力」 的設定。Pad Reset Config (PADRSTCFG) 的核心功能是決定：當電腦發生重置（Reset）時，這根 GPIO 針腳的設定值（如輸入/輸出、高低電位、電阻）是否要「被打回原形」？  
+在硬體設計中，這決定了訊號在開機、重新啟動或睡眠喚醒過程中的穩定性。  
+
+1. 為什麼需要不同的 Reset 訊號？
+> 在電腦運作中，Reset 分為很多等級。有些只是軟體重啟，有些是整台電腦斷電重來。
+* 00 = RSMRST# (Resume Reset)
+  * 等級：最高等級（最不容易被觸發）。
+
 
 
 
