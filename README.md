@@ -91,7 +91,7 @@ A. 模擬硬體尚未就緒的狀態
 做法：將 RXRAW1 設為 1。  
 結果：你的驅動程式會立刻讀到「硬碟已插入」的訊號，讓你可以繼續寫後面的邏輯代碼。
 
-[GPIO ACCESS P2SB](https://medium.com/@jacksonchen_43335/bios-gpio-p2sb-70e9b829b403)
+[GPIO ACCESS P2SB算法](https://medium.com/@jacksonchen_43335/bios-gpio-p2sb-70e9b829b403)
 
 
 
